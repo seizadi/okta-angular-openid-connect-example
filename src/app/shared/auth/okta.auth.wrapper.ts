@@ -11,9 +11,13 @@ export class OktaAuthWrapper {
 
   constructor(private oauthService: OAuthService) {
     this.authClient = new OktaAuth({
-      url: 'https://dev-158606.oktapreview.com',
+      url: 'https://dev-551469.oktapreview.com',
       issuer: 'default'
     });
+  }
+
+  getIdToken() {
+    return this.oauthService.getIdToken();
   }
 
   login(username: string, password: string): Promise<any> {
@@ -34,6 +38,12 @@ export class OktaAuthWrapper {
             .then((tokens) => {
               const idToken = tokens[0].idToken;
               const accessToken = tokens[1].accessToken;
+              if (tokens[0]) {
+                this.authClient.tokenManager.add('idToken', tokens[0]);
+              }
+              if (tokens[1]) {
+                this.authClient.tokenManager.add('accessToken', tokens[1]);
+              }
               const keyValuePair = `#id_token=${encodeURIComponent(idToken)}&access_token=${encodeURIComponent(accessToken)}`;
               return this.oauthService.tryLogin({
                 customHashFragment: keyValuePair,
