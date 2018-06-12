@@ -30,7 +30,7 @@ export class OktaAuthWrapper {
           return this.authClient.token.getWithoutPrompt({
             clientId: this.oauthService.clientId,
             responseType: ['id_token', 'token'],
-            scopes: ['openid', 'profile', 'email'],
+            scopes: ['openid', 'profile', 'email', 'groups'],
             sessionToken: response.sessionToken,
             nonce: nonce,
             redirectUri: window.location.origin
